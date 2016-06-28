@@ -344,6 +344,13 @@
 				media: "blockly/media/",
 				toolbox: document.getElementById("toolbox")
 			});
+
+			function generate() {
+				var code = "import ev3\n";
+				code += "ev3_motors = {'outA': ev3.Motor('outA'), 'outB': ev3.Motor('outB'), 'outC': ev3.Motor('outC'), 'outD': ev3.Motor('outD')}\n";
+				code += Blockly.Python.workspaceToCode(workspace);
+				return code;
+			}
 		</script>
 	</body>
 </html>
