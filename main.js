@@ -10,7 +10,6 @@ function save(data, callback) {
 }
 
 app.post("/save", bodyParser.text(), function(req, res) {
-	console.log(req.body);
 	save(req.body, function(err) {
 		if (err) {
 			res.status(500).end();
@@ -32,4 +31,6 @@ app.post("/run", bodyParser.text(), function(req, res) {
 
 app.use(express.static("http"));
 
-app.listen(3000);
+app.listen(3000, function() {
+	console.log("Listening on port 3000");
+});
