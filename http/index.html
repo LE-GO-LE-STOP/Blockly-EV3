@@ -4,17 +4,77 @@
 	</head>
 
 	<body>
-		<script src="blockly/blockly_compressed.js"></script>
-		<script src="blockly/blocks_compressed.js"></script>
-		<script src="blockly/msg/js/en.js"></script>
-
 		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 80px">
 			<h1>
 				Blockly - EV3
 			</h1>
 		</div>
 
+		<script src="blockly/blockly_compressed.js"></script>
+		<script src="blockly/blocks_compressed.js"></script>
+		<script src="blockly/python_compressed.js"></script>
+		<script src="blockly/msg/js/en.js"></script>
+
+		<script src="blocks/io.js"></script>
+
 		<xml id="toolbox" style="display: none">
+			<category id="catIO" colour="0" name="Input/Output">
+				<block type="ev3io_motoron">
+					<field name="PORT"></field>
+					<value name="POWER">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="ev3io_motoroff">
+					<field name="PORT"></field>
+					<field name="BRAKE"></field>
+				</block>
+				<block type="ev3io_motoronforseconds">
+					<field name="PORT"></field>
+					<value name="TIME">
+						<shadow type="math_number">
+							<field name="NUM">0</field>
+						</shadow>
+					</value>
+					<value name="POWER">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+					<field name="BRAKE"></field>
+				</block>
+				<block type="ev3io_motoronfordegrees">
+					<field name="PORT"></field>
+					<value name="DEGREES">
+						<shadow type="math_number">
+							<field name="NUM">0</field>
+						</shadow>
+					</value>
+					<value name="POWER">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+					<field name="BRAKE"></field>
+				</block>
+				<block type="ev3io_motoronforrotations">
+					<field name="PORT"></field>
+					<value name="ROTATIONS">
+						<shadow type="math_number">
+							<field name="NUM">0</field>
+						</shadow>
+					</value>
+					<value name="POWER">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+					<field name="BRAKE"></field>
+				</block>
+			</category>
+			<sep></sep>
 			<category id="catLogic" colour="210" name="Logic">
 				<block type="controls_if"></block>
 				<block type="logic_compare"></block>
@@ -216,13 +276,6 @@
 						</shadow>
 					</value>
 				</block>
-				<block type="text_prompt_ext">
-					<value name="TEXT">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
 			</category>
 			<category id="catLists" colour="260" name="Lists">
 				<block type="lists_create_with">
@@ -274,44 +327,6 @@
 					</value>
 				</block>
 				<block type="lists_sort"></block>
-			</category>
-			<category id="catColour" colour="20" name="Color">
-				<block type="colour_picker"></block>
-				<block type="colour_random"></block>
-				<block type="colour_rgb">
-					<value name="RED">
-						<shadow type="math_number">
-							<field name="NUM">100</field>
-						</shadow>
-					</value>
-					<value name="GREEN">
-						<shadow type="math_number">
-							<field name="NUM">50</field>
-						</shadow>
-					</value>
-					<value name="BLUE">
-						<shadow type="math_number">
-							<field name="NUM">0</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="colour_blend">
-					<value name="COLOUR1">
-						<shadow type="colour_picker">
-							<field name="COLOUR">#ff0000</field>
-						</shadow>
-					</value>
-					<value name="COLOUR2">
-						<shadow type="colour_picker">
-							<field name="COLOUR">#3333ff</field>
-						</shadow>
-					</value>
-					<value name="RATIO">
-						<shadow type="math_number">
-							<field name="NUM">0.5</field>
-						</shadow>
-					</value>
-				</block>
 			</category>
 			<sep></sep>
 			<category id="catVariables" colour="330" custom="VARIABLE" name="Variables"></category>
