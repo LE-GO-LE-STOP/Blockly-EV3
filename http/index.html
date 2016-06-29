@@ -20,7 +20,8 @@
 		<script src="blockly/msg/js/en.js"></script>
 
 		<script src="blocks/io.js"></script>
-		<script src="blocks/brick.js"></script>
+		<script src="blocks/buttons.js"></script>
+		<script src="blocks/sound.js"></script>
 		<script src="blocks/colour.js"></script>
 
 		<xml id="toolbox" style="display: none">
@@ -104,6 +105,23 @@
 				<block type="ev3brick_ledcolour"></block>
 			</category>
 			<category id="catSound" colour="0" name="Sound">
+				<block type="ev3sound_tone">
+					<value name="HZ">
+						<shadow type="math_number">
+							<field name="NUM">500</field>
+						</shadow>
+					</value>
+					<value name="TIME">
+						<shadow type="math_number">
+							<field name="NUM">0.5</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="ev3sound_speak">
+					<value name="TEXT">
+						<shadow type="text"></shadow>
+					</value>
+				</block>
 			</category>
 			<sep></sep>
 			<category id="catLogic" colour="210" name="Logic">
