@@ -39,7 +39,6 @@ Blockly.Blocks['ev3sound_speak'] = {
     this.setNextStatement(true, null);
     this.setColour(315);
     this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
   }
 };
 Blockly.Python['ev3sound_speak'] = function(block) {
