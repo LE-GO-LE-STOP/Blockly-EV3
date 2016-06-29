@@ -1,4 +1,5 @@
 // Buttons
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#uwe2ub
 Blockly.Blocks['ev3brick_button'] = {
   init: function() {
     this.appendDummyInput()
