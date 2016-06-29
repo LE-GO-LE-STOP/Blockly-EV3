@@ -10,7 +10,7 @@
 			<div>
 				<ul>
 					<li class="leftAlign"><div id="title">Blockly - EV3</div></li>
-					<li class="rightAlign"><button type="button" class="btn btn-primary">Run</button></li>
+					<li class="rightAlign"><button type="button" class="btn btn-primary" id="run">Run</button></li>
 				</ul>
 			</div>
 		</div>
@@ -394,7 +394,6 @@
 		<script>
 			Blockly.Python.addReservedWords("ev3_motors,ev3_sensors");
 
-			var blocklyArea = document.getElementById("blocklyArea");
 			var blocklyDiv = document.getElementById("blocklyDiv");
 			var workspace = Blockly.inject("blocklyDiv", {
 				media: "blockly/media/",
@@ -445,7 +444,7 @@
 					</div>
 
 					<div class="modal-footer">
-					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Stop</button>
+					<button type="button" class="btn btn-lg btn-danger" id="stopButton">Stop</button>
 					</div>
 				</div>
 			</div>
@@ -477,15 +476,20 @@
 				location.reload();
 			});
 
-			//When the console is shown
-			$("#console").on("shown.bs.modal", function() {
+			$("#run").click(function() {
 				execLogClear();
-				$("#console").focus();
+				$("#stopButton").text("Stop");
+				$("#console").modal("show");
+				socket.emit("run", generate()); // Generate Python code and send it to the server to be executed
 			});
 
-			//Send a message to kill program on console close
-			$("#console").on("hidden.bs.modal", function() {
-				socket.emit("end_exec");
+			$("#stopButton").click(function() {
+				let t = $(this);
+				if (t.text() == "Stop") {
+					socket.emit("exec_end");
+				} else {
+					$("#console").modal("hide");
+				}
 			});
 
 			if (isOnEV3) {
@@ -493,6 +497,10 @@
 			}
 
 			function createSocketBindings() {
+				socket.on("disconnect", function() {
+					alert("Connection to server lost!");
+				});
+
 				socket.on("server_busy", function() {
 					$("#serverBusyModal").modal("show");
 				});
@@ -500,7 +508,12 @@
 				socket.on("exec_log", function(data) {
 					execLog(data);
 				});
+
+				socket.on("exec_done", function() {
+					$("#stopButton").text("Close");
+				});
 			}
+			createSocketBindings();
 		</script>
 	</body>
 </html>
