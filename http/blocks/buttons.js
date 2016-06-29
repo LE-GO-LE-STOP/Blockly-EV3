@@ -1,3 +1,23 @@
+// Buttons
+Blockly.Blocks['ev3brick_button'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["Left", "left"], ["Right", "right"], ["Up", "up"], ["Down", "down"], ["Center", "enter"], ["Back", "backspace"]]), "BUTTON")
+        .appendField("button is")
+        .appendField(new Blockly.FieldDropdown([["pressed", "True"], ["released", "False"]]), "STATE");
+    this.setInputsInline(true);
+    this.setOutput(true, "Boolean");
+    this.setColour(260);
+    this.setTooltip('');
+  }
+};
+Blockly.Python['ev3brick_button'] = function(block) {
+  var dropdown_button = block.getFieldValue('BUTTON');
+  var dropdown_state = block.getFieldValue('STATE');
+  var code = 'ev3.Buttons.' + dropdown_button + " == " + dropdown_state;
+  return [code, Blockly.Python.ORDER_RELATIONAL];
+};
+
 // LED brightness
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#vkutky
 Blockly.Blocks['ev3brick_ledbrightness'] = {
