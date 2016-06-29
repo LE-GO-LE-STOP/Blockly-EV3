@@ -1,17 +1,22 @@
 <html>
 	<head>
 		<title>Blockly - EV3</title>
+
+		<link rel="stylesheet" href="/css/main.css">
 	</head>
 
 	<body>
-		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 80px">
-			<h1>
-				Blockly - EV3
-			</h1>
+		<div id="titleDiv">
+			<div>
+				<ul>
+					<li class="leftAlign"><div id="title">Blockly - EV3</div></li>
+					<li class="rightAlign"><button type="button" class="btn btn-primary">Run</button></li>
+				</ul>
+			</div>
 		</div>
 
-		<div id="blocklyArea" style="position: absolute; top: 80; bottom: 0; left: 0; right: 0;">
-			<div id="blocklyDiv" style="position: absolute; width: 100%; height: 100%; top: 0; right: 0;"></div>
+		<div id="blocklyArea">
+			<div id="blocklyDiv"></div>
 		</div>
 
 		<script src="blockly/blockly_compressed.js"></script>
@@ -24,7 +29,7 @@
 		<script src="blocks/sound.js"></script>
 		<script src="blocks/colour.js"></script>
 
-		<xml id="toolbox" style="display: none">
+		<xml id="toolbox" class="hidden">
 			<category id="catIO" colour="0" name="Input/Output">
 				<block type="ev3io_motoron">
 					<value name="POWER">
@@ -428,12 +433,42 @@
 			</div>
 		</div>
 
+		<div class="modal fade" id="console" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Console</h4>
+					</div>
+
+					<div class="modal-body">
+						<div id="consoleLog"></div>
+					</div>
+
+					<div class="modal-footer">
+					<button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Stop</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script>
 			//Test if the website is being served from an ev3
 			var req = new XMLHttpRequest();
 			req.open("GET", "/host.html?c=" + Math.random(), false); //Randomise url to avoid cache
 			req.send(null);
 			var isOnEV3 = req.getAllResponseHeaders().indexOf("Blockly-EV3-On-Brick: true") >= 0;
+
+			var socket;
+
+			function execLog(text) {
+				$("#consoleLog").append(text);
+				var e = document.getElementById("consoleLog");
+				e.scrollTop = e.scrollHeight;
+			}
+
+			function execLogClear() {
+				$("#consoleLog").text("");
+			}
 
 			//Set up bootstrap components
 			//Refresh the page when button is clicked
@@ -442,16 +477,30 @@
 				location.reload();
 			});
 
-			var socket
+			//When the console is shown
+			$("#console").on("shown.bs.modal", function() {
+				execLogClear();
+				$("#console").focus();
+			});
+
+			//Send a message to kill program on console close
+			$("#console").on("hidden.bs.modal", function() {
+				socket.emit("end_exec");
+			});
+
 			if (isOnEV3) {
 				socket = io();
-			} else {
-
 			}
 
-			socket.on("server_busy", function() {
-				$("#serverBusyModal").modal("show");
-			});
+			function createSocketBindings() {
+				socket.on("server_busy", function() {
+					$("#serverBusyModal").modal("show");
+				});
+
+				socket.on("exec_log", function(data) {
+					execLog(data);
+				});
+			}
 		</script>
 	</body>
 </html>
