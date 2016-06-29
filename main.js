@@ -32,6 +32,7 @@ app.use(function(req, res) {
 
 io.on("connection", function(socket) {
 	if (hasConnection) {
+		socket.emit("server_busy");
 		socket.disconnect();
 		return;
 	}

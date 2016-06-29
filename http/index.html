@@ -403,16 +403,44 @@
 				code += Blockly.Python.workspaceToCode(workspace);
 				return code;
 			}
-
 		</script>
 
+		<script src="/jquery-2.2.4.min.js"></script>
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
+
+		<div class="modal fade" id="serverBusyModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Server Busy</h4>
+					</div>
+
+					<div class="modal-body">
+						<p>The server is busy with another client. Please refresh to try again.</p>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="refreshPageButton">Refresh</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script>
 			//Test if the website is being served from an ev3
 			var req = new XMLHttpRequest();
 			req.open("GET", "/host.html?c=" + Math.random(), false); //Randomise url to avoid cache
 			req.send(null);
 			var isOnEV3 = req.getAllResponseHeaders().indexOf("Blockly-EV3-On-Brick: true") >= 0;
+
+			//Set up bootstrap components
+			//Refresh the page when button is clicked
+			//Used when the client has disconnected from the server
+			$("#refreshPageButton").click(function() {
+				location.reload();
+			});
 
 			var socket
 			if (isOnEV3) {
@@ -421,8 +449,8 @@
 
 			}
 
-			socket.on("disconnect", function() {
-				console.log("dc");
+			socket.on("server_busy", function() {
+				$("#serverBusyModal").modal("show");
 			});
 		</script>
 	</body>
