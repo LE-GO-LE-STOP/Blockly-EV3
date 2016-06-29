@@ -4,23 +4,18 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 let app = express();
+let http = require("http").Server(app);
+let io = require("socket.io")(http);
 
-function save(data, callback) {
-	fs.writeFile("python/main.py", data, callback)
-}
+let hasConnection = false; //Only allow 1 user to be connected at a time
 
-app.post("/save", bodyParser.text(), function(req, res) {
-	save(req.body, function(err) {
-		if (err) {
-			res.status(500).end();
-		} else {
-			res.status(200).send("OK");
-		}
-	});
+app.get("/host.html", function(req, res) {
+	res.set("Blockly-EV3-On-Brick", true); // Tell the client that it is requesting the page from the ev3 brick.
+	res.send("");
 });
 
 app.post("/run", bodyParser.text(), function(req, res) {
-	save(req.body, function(err) {
+	fs.writeFile("python.main.py", req.body, function(err) {
 		if (err) {
 			res.status(500).end();
 		} else {
@@ -31,6 +26,25 @@ app.post("/run", bodyParser.text(), function(req, res) {
 
 app.use(express.static("http"));
 
-app.listen(3000, function() {
+app.use(function(req, res) {
+	res.redirect("/");
+});
+
+io.on("connection", function(socket) {
+	if (hasConnection) {
+		socket.disconnect();
+		return;
+	}
+
+	console.log("User connected");
+	hasConnection = true;
+
+	socket.on("disconnect", function() {
+		console.log("User disconnected");
+		hasConnection = false;
+	})
+});
+
+http.listen(3000, function() {
 	console.log("Listening on port 3000");
 });
