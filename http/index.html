@@ -20,6 +20,7 @@
 		<script src="blockly/msg/js/en.js"></script>
 
 		<script src="blocks/io.js"></script>
+		<script src="blocks/brick.js"></script>
 		<script src="blocks/colour.js"></script>
 
 		<xml id="toolbox" style="display: none">
@@ -91,6 +92,18 @@
 					<block type="ev3io_sensorinfrared_seekproximity"></block>
 					<block type="ev3io_sensorinfrared_remote"></block>
 				</category>
+			</category>
+			<category id="catButtons" colour="0" name="Brick Buttons">
+				<block type="ev3brick_ledbrightness">
+					<value name="BRIGHTNESS">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="ev3brick_ledcolour"></block>
+			</category>
+			<category id="catSound" colour="0" name="Sound">
 			</category>
 			<sep></sep>
 			<category id="catLogic" colour="210" name="Logic">
