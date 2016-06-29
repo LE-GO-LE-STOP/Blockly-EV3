@@ -142,3 +142,70 @@ Blockly.Python['ev3io_motoronforrotations'] = function(block) {
   var code = 'ev3_motors[' + dropdown_port + '].onForRotations(power = ' + value_power + ', rotations = ' + value_rotations + ', brake = ' + dropdown_brake + ')\n';
   return code;
 };
+
+// Touch sensor
+Blockly.Blocks['ev3io_sensortouch'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Touch Sensor");
+    this.setInputsInline(true);
+    this.setOutput(true, "Sensor");
+    this.setColour(65);
+    this.setTooltip('');
+  }
+};
+Blockly.Python['ev3io_sensortouch'] = function(block) {
+  var code = 'ev3.TouchSensor()';
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+// Colour sensor
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#69k3qw
+Blockly.Blocks['ev3io_sensorcolour'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Colour Sensor");
+    this.setInputsInline(true);
+    this.setOutput(true, "Sensor");
+    this.setColour(65);
+    this.setTooltip('');
+  }
+};
+Blockly.Python['ev3io_sensorcolour'] = function(block) {
+  var code = 'ev3.ColourSensor()';
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+// Ultrasonic sensor
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#hf7n2u
+Blockly.Blocks['ev3io_sensorultrasonic'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Ultrasonic Sensor");
+    this.setInputsInline(true);
+    this.setOutput(true, "Sensor");
+    this.setColour(65);
+    this.setTooltip('');
+  }
+};
+Blockly.Python['ev3io_sensorultrasonic'] = function(block) {
+  var code = '...';
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+// Infrared sensor
+// https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#nowdkx
+Blockly.Blocks['ev3io_sensorinfrared'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Infrared Sensor");
+    this.setInputsInline(true);
+    this.setOutput(true, "Sensor");
+    this.setColour(65);
+    this.setTooltip('');
+  }
+};
+Blockly.Python['ev3io_sensorinfrared'] = function(block) {
+  var code = 'ev3.InfraredSensor()';
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
