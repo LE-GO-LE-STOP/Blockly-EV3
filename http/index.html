@@ -10,29 +10,29 @@
 			</h1>
 		</div>
 
+		<div id="blocklyArea" style="position: absolute; top: 80; bottom: 0; left: 0; right: 0;">
+			<div id="blocklyDiv" style="position: absolute; width: 100%; height: 100%; top: 0; right: 0;"></div>
+		</div>
+
 		<script src="blockly/blockly_compressed.js"></script>
 		<script src="blockly/blocks_compressed.js"></script>
 		<script src="blockly/python_compressed.js"></script>
 		<script src="blockly/msg/js/en.js"></script>
 
 		<script src="blocks/io.js"></script>
+		<script src="blocks/colour.js"></script>
 
 		<xml id="toolbox" style="display: none">
 			<category id="catIO" colour="0" name="Input/Output">
 				<block type="ev3io_motoron">
-					<field name="PORT"></field>
 					<value name="POWER">
 						<shadow type="math_number">
 							<field name="NUM">100</field>
 						</shadow>
 					</value>
 				</block>
-				<block type="ev3io_motoroff">
-					<field name="PORT"></field>
-					<field name="BRAKE"></field>
-				</block>
+				<block type="ev3io_motoroff"></block>
 				<block type="ev3io_motoronforseconds">
-					<field name="PORT"></field>
 					<value name="TIME">
 						<shadow type="math_number">
 							<field name="NUM">0</field>
@@ -43,10 +43,8 @@
 							<field name="NUM">100</field>
 						</shadow>
 					</value>
-					<field name="BRAKE"></field>
 				</block>
 				<block type="ev3io_motoronfordegrees">
-					<field name="PORT"></field>
 					<value name="DEGREES">
 						<shadow type="math_number">
 							<field name="NUM">0</field>
@@ -57,10 +55,8 @@
 							<field name="NUM">100</field>
 						</shadow>
 					</value>
-					<field name="BRAKE"></field>
 				</block>
 				<block type="ev3io_motoronforrotations">
-					<field name="PORT"></field>
 					<value name="ROTATIONS">
 						<shadow type="math_number">
 							<field name="NUM">0</field>
@@ -71,8 +67,30 @@
 							<field name="NUM">100</field>
 						</shadow>
 					</value>
-					<field name="BRAKE"></field>
 				</block>
+				<block type="ev3io_sensorset"></block>
+				<category id="catTouchSensor" colour="65" name="Touch Sensor">
+					<block type="ev3io_sensortouch"></block>
+					<block type="ev3io_sensortouch_pressed"></block>
+				</category>
+				<category id="catColourSensor" colour="65" name="Colour Sensor">
+					<block type="ev3io_sensorcolour"></block>
+					<block type="ev3io_sensorcolour_reflected"></block>
+					<block type="ev3io_sensorcolour_ambient"></block>
+					<block type="ev3io_sensorcolour_colour"></block>
+				</category>
+				<category id="catUltrasonicSensor" colour="65" name="Ultrasonic Sensor">
+					<block type="ev3io_sensorultrasonic"></block>
+					<block type="ev3io_sensorultrasonic_distance"></block>
+					<block type="ev3io_sensorultrasonic_nearby"></block>
+				</category>
+				<category id="catInfraredSensor" colour="65" name="Infrared Sensor">
+					<block type="ev3io_sensorinfrared"></block>
+					<block type="ev3io_sensorinfrared_proximity"></block>
+					<block type="ev3io_sensorinfrared_seekheading"></block>
+					<block type="ev3io_sensorinfrared_seekproximity"></block>
+					<block type="ev3io_sensorinfrared_remote"></block>
+				</category>
 			</category>
 			<sep></sep>
 			<category id="catLogic" colour="210" name="Logic">
@@ -328,16 +346,17 @@
 				</block>
 				<block type="lists_sort"></block>
 			</category>
+			<category id="catColour" colour="30" name="Colour">
+				<block type="ev3colour_picker"></block>
+			</category>
 			<sep></sep>
 			<category id="catVariables" colour="330" custom="VARIABLE" name="Variables"></category>
 			<category id="catFunctions" colour="290" custom="PROCEDURE" name="Functions"></category>
 		</xml>
 
-		<div id="blocklyArea" style="position: absolute; top: 80; bottom: 0; left: 0; right: 0;">
-			<div id="blocklyDiv" style="position: absolute; width: 100%; height: 100%; top: 0; right: 0;"></div>
-		</div>
-
 		<script>
+			Blockly.Python.addReservedWords("ev3_motors,ev3_sensors");
+
 			var blocklyArea = document.getElementById("blocklyArea");
 			var blocklyDiv = document.getElementById("blocklyDiv");
 			var workspace = Blockly.inject("blocklyDiv", {
@@ -348,6 +367,7 @@
 			function generate() {
 				var code = "import ev3\n";
 				code += "ev3_motors = {'outA': ev3.Motor('outA'), 'outB': ev3.Motor('outB'), 'outC': ev3.Motor('outC'), 'outD': ev3.Motor('outD')}\n";
+				code += "ev3_sensors = {}\n";
 				code += Blockly.Python.workspaceToCode(workspace);
 				return code;
 			}
