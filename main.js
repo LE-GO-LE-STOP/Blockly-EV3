@@ -4,33 +4,34 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const child_process = require("child_process");
 const StringDecoder = require("string_decoder").StringDecoder;
+const SSHClient = require("ssh2").Client;
 
 let app = express();
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
 
-let spawn;
-function createNewChildProcess(socket) {
-	spawn = child_process.spawn("python", ["python/main.py"]);
-	console.log("Spawned process");
-	socket.emit("exec_log", "Program started");
+let client = new SSHClient();
+let sftp;
+client.on("ready", function() {
+	console.log("Connected to brick");
 
-	spawn.stdout.on("data", function(data) {
-		let str = (new StringDecoder("utf8")).write(data);
-		console.log(str);
-		socket.emit("exec_log", str);
+	client.sftp((err, ftp) => {
+		if (err) {
+			error("Can not establish ftp connection");
+		}
+
+		sftp = ftp;
 	});
+}).connect({
+	host: process.argv[1], //IP of the brick
+	port: 22,
+	username: "robot",
+	password: "maker"
+});
 
-	spawn.stderr.on("data", function(data) {
-		let str = (new StringDecoder("utf8")).write(data);
-		console.log(str);
-		socket.emit("exec_log", str);
-	});
-
-	spawn.on("close", function(code) {
-		console.log("Spawn done");
-		socket.emit("exec_log", "Program done");
-		socket.emit("exec_done");
+function runProgram(socket) {
+	client.exec("python ~/Blockly-EV3/main.py", (err, stream) => {
+		
 	});
 }
 
@@ -68,14 +69,20 @@ io.on("connection", function(socket) {
 				socket.emit("exec_log", "Error: Can not write program to file!");
 				socket.emit("exec_done");
 			} else {
-				createNewChildProcess(socket);
+				sftp.fastPut("python/main.py", "~/Blockly-EV3/main.py", (err) => {
+					if (err) {
+						socket.emit("exec_log", "Error: Can not transmit program to EV3");
+						socket.emit("exec_done");
+					}
+
+					runProgram(socket);
+				});
 			}
 		});
 	});
 
 	socket.on("exec_end", function() {
-		spawn.kill();
-		console.log("Killing spawn...")
+		
 	});
 });
 
