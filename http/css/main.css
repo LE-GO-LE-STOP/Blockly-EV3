@@ -43,7 +43,7 @@
 	font-size: 30;
 }
 
-#blocklyArea {
+#contentArea {
 	position: absolute;
 	top: 80;
 	bottom: 0;
@@ -53,10 +53,24 @@
 
 #blocklyDiv {
 	position: absolute;
-	width: 100%;
+	width: 66.66%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+#codeDiv {
+	position: absolute;
+	width: 33.33%;
 	height: 100%;
 	top: 0;
 	right: 0;
+}
+
+#codePre {
+	height: 100%;
+	margin: 0px;
+	padding: 10px;
 }
 
 #consoleLog {

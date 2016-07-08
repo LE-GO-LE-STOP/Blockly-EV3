@@ -75,7 +75,7 @@ Blockly.Python['ev3io_motoronforseconds'] = function(block) {
   var value_time = Blockly.Python.valueToCode(block, 'TIME', Blockly.Python.ORDER_ATOMIC);
   var value_power = Blockly.Python.valueToCode(block, 'POWER', Blockly.Python.ORDER_ATOMIC);
   var dropdown_brake = block.getFieldValue('BRAKE');
-  var code = 'ev3_motors[' + dropdown_port + '].onForSeconds(power = ' + value_power + ', seconds = ' + value_time + ', brake = ' + dropdown_brake + ')\n';
+  var code = 'ev3_motors["' + dropdown_port + '"].onForSeconds(power = ' + value_power + ', seconds = ' + value_time + ', brake = ' + dropdown_brake + ')\n';
   return code;
 };
 
@@ -107,7 +107,7 @@ Blockly.Python['ev3io_motoronfordegrees'] = function(block) {
   var value_degrees = Blockly.Python.valueToCode(block, 'DEGREES', Blockly.Python.ORDER_ATOMIC);
   var value_power = Blockly.Python.valueToCode(block, 'POWER', Blockly.Python.ORDER_ATOMIC);
   var dropdown_brake = block.getFieldValue('BRAKE');
-  var code = 'ev3_motors[' + dropdown_port + '].onForDegrees(power = ' + value_power + ', degrees = ' + value_degrees + ', brake = ' + dropdown_brake + ')\n';
+  var code = 'ev3_motors["' + dropdown_port + '"].onForDegrees(power = ' + value_power + ', degrees = ' + value_degrees + ', brake = ' + dropdown_brake + ')\n';
   return code;
 };
 
@@ -139,7 +139,7 @@ Blockly.Python['ev3io_motoronforrotations'] = function(block) {
   var value_rotations = Blockly.Python.valueToCode(block, 'ROTATIONS', Blockly.Python.ORDER_ATOMIC);
   var value_power = Blockly.Python.valueToCode(block, 'POWER', Blockly.Python.ORDER_ATOMIC);
   var dropdown_brake = block.getFieldValue('BRAKE');
-  var code = 'ev3_motors[' + dropdown_port + '].onForRotations(power = ' + value_power + ', rotations = ' + value_rotations + ', brake = ' + dropdown_brake + ')\n';
+  var code = 'ev3_motors["' + dropdown_port + '"].onForRotations(power = ' + value_power + ', rotations = ' + value_rotations + ', brake = ' + dropdown_brake + ')\n';
   return code;
 };
 

@@ -15,9 +15,26 @@
 			</div>
 		</div>
 
-		<div id="blocklyArea">
+		<div id="contentArea">
 			<div id="blocklyDiv"></div>
+			<div id="codeDiv">
+				<pre id="codePre">
+					<code id="codeDisplay" class="language-python"></code>
+				</pre>
+			</div>
 		</div>
+
+		<link rel="stylesheet" href="/css/prism.css">
+		<script src="/prism.js"></script>
+
+		<script>
+			Prism.plugins.NormalizeWhitespace.setDefaults({
+				"remove-trailing": true,
+				"remove-indent": true,
+				"left-trim": true,
+				"right-trim": true
+			});
+		</script>
 
 		<script src="blockly/blockly_compressed.js"></script>
 		<script src="blockly/blocks_compressed.js"></script>
@@ -392,7 +409,7 @@
 		</xml>
 
 		<script>
-			Blockly.Python.addReservedWords("ev3_motors,ev3_sensors");
+			Blockly.Python.addReservedWords("ev3,ev3_motors,ev3_sensors");
 
 			var blocklyDiv = document.getElementById("blocklyDiv");
 			var workspace = Blockly.inject("blocklyDiv", {
@@ -404,6 +421,7 @@
 				var code = "import ev3\n";
 				code += "ev3_motors = {'outA': ev3.Motor('outA'), 'outB': ev3.Motor('outB'), 'outC': ev3.Motor('outC'), 'outD': ev3.Motor('outD')}\n";
 				code += "ev3_sensors = {}\n";
+				code += "\n";
 				code += Blockly.Python.workspaceToCode(workspace);
 				return code;
 			}
@@ -514,6 +532,18 @@
 				});
 			}
 			createSocketBindings();
+		</script>
+
+		<script>
+			var codeDisplay = $("#codeDisplay");
+			function updateCodeDisplay() {
+				codeDisplay.text(generate());
+				Prism.highlightElement(codeDisplay[0]);
+			}
+			workspace.addChangeListener(updateCodeDisplay);
+			setTimeout(function() {
+				updateCodeDisplay();
+			}, 0);
 		</script>
 	</body>
 </html>
